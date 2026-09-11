@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Core tests — Batch File Toolkit</title>
+  <style>
+    body { font-family: Consolas, "Cascadia Mono", monospace; background: #f5f7fb; color: #1e293b; padding: 24px; }
+    h1 { font-size: 18px; }
+    #summary { font-size: 16px; font-weight: bold; padding: 10px 14px; border-radius: 8px; display: inline-block; }
+    #summary.pass { background: #dcfce7; color: #166534; }
+    #summary.fail { background: #fee2e2; color: #991b1b; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 4px 8px; border-radius: 4px; margin: 2px 0; }
+    li.ok { color: #166534; }
+    li.bad { color: #991b1b; background: #fee2e2; }
+  </style>
+</head>
+<body>
+  <h1>Batch File Toolkit — core.js test suite</h1>
+  <pre id="summary">running…</pre>
+  <ul id="list"></ul>
+
+  <script src="lib/xlsx.full.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/tests.js"></script>
+  <script>
+    (function () {
+      var outcome = runCoreTests();
+      var summary = document.getElementById("summary");
+      var list = document.getElementById("list");
+      outcome.results.forEach(function (r) {
+        var li = document.createElement("li");
+        li.className = r.ok ? "ok" : "bad";
+        li.textContent = (r.ok ? "PASS  " : "FAIL  ") + r.name + (r.ok ? "" : "  =>  " + r.error);
+        list.appendChild(li);
+      });
+      var text = "TESTS " + (outcome.failed === 0 ? "PASSED" : "FAILED") + " " +
+        outcome.passed + "/" + outcome.results.length;
+      summary.textContent = text;
+      summary.className = outcome.failed === 0 ? "pass" : "fail";
+      document.title = text;
+    })();
+  </script>
+</body>
+</html>
